@@ -15,7 +15,7 @@ Version 0.33
 
 =cut
 
-our $VERSION = '0.33';
+our $VERSION = '0.34';
 
 =head1 SYNOPSIS
 
@@ -23,7 +23,7 @@ our $VERSION = '0.33';
 
     my $normalizer = URL::Normalize->new( 'http://www.example.com/display?lang=en&article=fred' );
 
-    # Normalize the URL of your choosing.
+    # Normalize the URL.
     $normalizer->remove_social_query_params;
     $normalizer->make_canonical;
 
@@ -33,12 +33,6 @@ our $VERSION = '0.33';
 =cut
 
 =head1 DESCRIPTION
-
-This is NOT a perfect solution. If you normalize a URL using all the methods in
-this module, there is a high probability that the URL will stop "working." This
-is merely a helper module for those of you who wants to either normalize a URL
-using only a few of the safer methods, and/or for those of you who wants to
-generate a unique "ID" from any given URL.
 
 When writing a web crawler, for example, it's always very costly to check if a
 URL has been fetched/seen when you have millions or billions of URLs in a sort
@@ -66,7 +60,11 @@ methods:
 
 =back
 
-You could think of this module as a URL-specific L<Bloom::Filter> helper.
+This is NOT a perfect solution. If you normalize a URL using all the methods in
+this module, there is a high probability that the URL will stop "working." This
+is merely a helper module for those of you who wants to either normalize a URL
+using only a few of the safer methods, and/or for those of you who wants to
+generate a unique "ID" from any given URL.
 
 =head1 CONSTRUCTORS
 
@@ -80,8 +78,9 @@ You can also send in just the path:
 
     my $normalizer = URL::Normalize->new( '/some/path' );
 
-The latter is not recommended, however, so you should look into L<URI>'s
-C<new_abs> to create absolute URLs before you use them with URL::Normalize.
+The latter is NOT recommended, though, and hasn't been tested properly. You
+should always give URL::Normalize an absolute URL by using L<URI>'s C<new_abs>
+(or is similar solutions).
 
 =cut
 
@@ -120,11 +119,13 @@ has 'dir_index_regexps' => (
     isa     => 'ArrayRef[Str]',
     is      => 'rw',
     handles => {
-        'add_directory_index_regexp' => 'push',
+        'add_dir_index_regexp' => 'push',
     },
     default => sub {
         [
             '/default\.aspx?',
+            '/default\.s?html?',
+            '/home\.s?html?',
             '/index\.cgi',
             '/index\.php\d?',
             '/index\.pl',
@@ -146,6 +147,8 @@ has 'social_query_params' => (
             'utm_campaign',
             'utm_medium',
             'utm_source',
+            'utm_term',
+            'utm_content',
         ],
     },
 );
@@ -228,14 +231,15 @@ sub make_canonical {
 
 =head2 remove_dot_segments
 
-The C<.>, C<..> and C<...> segments will be removed and "folded" (or "flattened", if
-you prefer) from the URL.
+The C<.>, C<..> and C<...> segments will be removed and "folded" (or
+"flattened", if you prefer) from the URL.
 
-This method does NOT follow the algorithm described in L<RFC 3986: Uniform Resource Indentifier|http://tools.ietf.org/html/rfc3986>,
-but rather flattens each path segment.
+This method does NOT follow the algorithm described in L<RFC 3986: Uniform
+Resource Indentifier|http://tools.ietf.org/html/rfc3986>, but rather flattens
+each path segment.
 
-Also keep in mind that this method doesn't (can't) account for symbolic links
-on the server side.
+Also keep in mind that this method doesn't (because it can't) account for
+symbolic links on the server side.
 
 Example:
 
@@ -245,7 +249,7 @@ Example:
 
     $normalizer->remove_dot_segments;
 
-    print $normalizer->get_url; # http://www.example.com/a/c/d.html
+    print $normalizer->url; # http://www.example.com/a/c/d.html
 
 =cut
 
@@ -339,10 +343,10 @@ object has been created:
 
     # ...
 
-    push( @{$normalizer->dir_index_regexps}, 'MyDirIndex\.html' );
+    $normalizer->add_directory_index_regexp( 'MyDirIndex\.html' );
 
-Keep in mind that the regular expression are NOT case-sensitive, so the
-default C</default\.aspx?> expression will NOT match C</Default\.aspx?>.
+Keep in mind that the regular expression ARE case-sensitive, so the
+default C</default\.aspx?> expression WILL ALSO match C</Default\.aspx?>.
 
 =cut
 
@@ -352,7 +356,7 @@ sub remove_directory_index {
     if ( my $URI = $self->URI ) {
         if ( my $path = $URI->path ) {
             foreach my $regex ( @{$self->dir_index_regexps} ) {
-                $path =~ s,$regex,/,;
+                $path =~ s,$regex,/,i;
             }
 
             $URI->path( $path );
@@ -530,11 +534,12 @@ sub remove_empty_query {
 
 =head2 remove_fragment
 
-Removes the fragment from the URL, but only if they are at the end of the URL.
+Removes the fragment from the URL, but only if seems like they are at the end
+of the URL.
 
 For example C<http://www.example.com/#foo> will be translated to
-C<http://www.example.com/>, but C<http://www.example.com/#foo/bar> will stay the
-same.
+C<http://www.example.com/>, but C<http://www.example.com/#foo/bar> will stay
+the same.
 
 Example:
 
@@ -595,7 +600,7 @@ output in response to what the fragment is, for example:
 sub remove_fragments {
     my $self = shift;
 
-    my $url = $self->get_url;
+    my $url = $self->url;
 
     $url =~ s/#.*//;
 
@@ -678,7 +683,7 @@ has been created:
         url => 'http://www.example.com/',
     );
 
-    push( @{$normalizer->social_query_params}, 'QueryParam' );
+    $normalizer->add_social_query_param( 'QueryParam' );
 
 =cut
 
@@ -716,7 +721,7 @@ Tore Aursand, C<< <toreau at gmail.com> >>
 
 =head1 BUGS
 
-Please report any bugs or feature requests to the web interface at L<https://rt.cpan.org/Dist/Display.html?Name=URL-Normalize>
+Please report any bugs or feature requests to the web interface at L<https://github.com/toreau/URL-Normalize/issues>
 
 =head1 SUPPORT
 
@@ -746,7 +751,7 @@ L<http://search.cpan.org/dist/URL-Normalize/>
 
 The MIT License (MIT)
 
-Copyright (c) 2012-2015 Tore Aursand
+Copyright (c) 2012-2016 Tore Aursand
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

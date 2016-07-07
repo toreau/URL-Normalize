@@ -12,7 +12,7 @@ Version 0.33
 
     my $normalizer = URL::Normalize->new( 'http://www.example.com/display?lang=en&article=fred' );
 
-    # Normalize the URL of your choosing.
+    # Normalize the URL.
     $normalizer->remove_social_query_params;
     $normalizer->make_canonical;
 
@@ -20,12 +20,6 @@ Version 0.33
     my $url = $normalizer->url;
 
 # DESCRIPTION
-
-This is NOT a perfect solution. If you normalize a URL using all the methods in
-this module, there is a high probability that the URL will stop "working." This
-is merely a helper module for those of you who wants to either normalize a URL
-using only a few of the safer methods, and/or for those of you who wants to
-generate a unique "ID" from any given URL.
 
 When writing a web crawler, for example, it's always very costly to check if a
 URL has been fetched/seen when you have millions or billions of URLs in a sort
@@ -47,7 +41,11 @@ methods:
 - `remove_directory_index`
 - `remove_empty_query`
 
-You could think of this module as a URL-specific [Bloom::Filter](https://metacpan.org/pod/Bloom::Filter) helper.
+This is NOT a perfect solution. If you normalize a URL using all the methods in
+this module, there is a high probability that the URL will stop "working." This
+is merely a helper module for those of you who wants to either normalize a URL
+using only a few of the safer methods, and/or for those of you who wants to
+generate a unique "ID" from any given URL.
 
 # CONSTRUCTORS
 
@@ -61,8 +59,9 @@ You can also send in just the path:
 
     my $normalizer = URL::Normalize->new( '/some/path' );
 
-The latter is not recommended, however, so you should look into [URI](https://metacpan.org/pod/URI)'s
-`new_abs` to create absolute URLs before you use them with URL::Normalize.
+The latter is NOT recommended, though, and hasn't been tested properly. You
+should always give URL::Normalize an absolute URL by using [URI](https://metacpan.org/pod/URI)'s `new_abs`
+(or is similar solutions).
 
 # METHODS
 
@@ -101,14 +100,15 @@ Example:
 
 ## remove\_dot\_segments
 
-The `.`, `..` and `...` segments will be removed and "folded" (or "flattened", if
-you prefer) from the URL.
+The `.`, `..` and `...` segments will be removed and "folded" (or
+"flattened", if you prefer) from the URL.
 
-This method does NOT follow the algorithm described in [RFC 3986: Uniform Resource Indentifier](http://tools.ietf.org/html/rfc3986),
-but rather flattens each path segment.
+This method does NOT follow the algorithm described in [RFC 3986: Uniform
+Resource Indentifier](http://tools.ietf.org/html/rfc3986), but rather flattens
+each path segment.
 
-Also keep in mind that this method doesn't (can't) account for symbolic links
-on the server side.
+Also keep in mind that this method doesn't (because it can't) account for
+symbolic links on the server side.
 
 Example:
 
@@ -118,7 +118,7 @@ Example:
 
     $normalizer->remove_dot_segments;
 
-    print $normalizer->get_url; # http://www.example.com/a/c/d.html
+    print $normalizer->url; # http://www.example.com/a/c/d.html
 
 ## remove\_directory\_index
 
@@ -160,10 +160,10 @@ object has been created:
 
     # ...
 
-    push( @{$normalizer->dir_index_regexps}, 'MyDirIndex\.html' );
+    $normalizer->add_directory_index_regexp( 'MyDirIndex\.html' );
 
-Keep in mind that the regular expression are NOT case-sensitive, so the
-default `/default\.aspx?` expression will NOT match `/Default\.aspx?`.
+Keep in mind that the regular expression ARE case-sensitive, so the
+default `/default\.aspx?` expression WILL ALSO match `/Default\.aspx?`.
 
 ## sort\_query\_parameters
 
@@ -228,11 +228,12 @@ Example:
 
 ## remove\_fragment
 
-Removes the fragment from the URL, but only if they are at the end of the URL.
+Removes the fragment from the URL, but only if seems like they are at the end
+of the URL.
 
 For example `http://www.example.com/#foo` will be translated to
-`http://www.example.com/`, but `http://www.example.com/#foo/bar` will stay the
-same.
+`http://www.example.com/`, but `http://www.example.com/#foo/bar` will stay
+the same.
 
 Example:
 
@@ -318,7 +319,7 @@ has been created:
         url => 'http://www.example.com/',
     );
 
-    push( @{$normalizer->social_query_params}, 'QueryParam' );
+    $normalizer->add_social_query_param( 'QueryParam' );
 
 # SEE ALSO
 
@@ -334,7 +335,7 @@ Tore Aursand, `<toreau at gmail.com>`
 
 # BUGS
 
-Please report any bugs or feature requests to the web interface at [https://rt.cpan.org/Dist/Display.html?Name=URL-Normalize](https://rt.cpan.org/Dist/Display.html?Name=URL-Normalize)
+Please report any bugs or feature requests to the web interface at [https://github.com/toreau/URL-Normalize/issues](https://github.com/toreau/URL-Normalize/issues)
 
 # SUPPORT
 
@@ -360,7 +361,7 @@ You can also look for information at:
 
 The MIT License (MIT)
 
-Copyright (c) 2012-2015 Tore Aursand
+Copyright (c) 2012-2016 Tore Aursand
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

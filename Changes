@@ -1,5 +1,14 @@
 Revision history for URL::Normalize
 
+0.34    2016-07-07
+        - MAJOR: Directory indexes are NO LONGER case-sensitive, so 'Index.html'
+                 and 'index.html' are treated the same.
+        - Added more directory indexes to the default directory index list.
+        - Added more UTM-parameters to the default social query parameter list.
+        - Renamed 'add_directory_index_regexp' to 'add_dir_index_regexp'.
+        - Up requirements' versions.
+        - Improved the documentation.
+
 0.33    2015-12-12
         - Maintenance release:
             - Upped version numbers on required modules.

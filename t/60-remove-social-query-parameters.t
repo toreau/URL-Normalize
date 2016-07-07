@@ -13,7 +13,7 @@ BEGIN {
 {
     my %tests = (
         'http://www.huffingtonpost.com/2014/06/02/multilingual-benefits_n_5399980.html?ncid=tweetlnkushpmg00000067' => 'http://www.huffingtonpost.com/2014/06/02/multilingual-benefits_n_5399980.html',
-        'http://www.example.com/?utm_campaign=&utm_medium=&utm_source=' => 'http://www.example.com/',
+        'http://www.example.com/?utm_campaign=&utm_medium=&utm_source='                                             => 'http://www.example.com/',
     );
 
     while ( my ($input, $output) = each %tests ) {
@@ -30,11 +30,11 @@ BEGIN {
 {
     # Check for default social query parameters.
     my $normalizer = URL::Normalize->new( 'http://www.example.com/' );
-    is_deeply( $normalizer->social_query_params, [ 'ncid', 'utm_campaign', 'utm_medium', 'utm_source' ] );
+    is_deeply( $normalizer->social_query_params, [ 'ncid', 'utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content' ] );
 
     # Try to add another.
     $normalizer->add_social_query_param( 'foobar' );
-    is_deeply( $normalizer->social_query_params, [ 'ncid', 'utm_campaign', 'utm_medium', 'utm_source', 'foobar' ] );
+    is_deeply( $normalizer->social_query_params, [ 'ncid', 'utm_campaign', 'utm_medium', 'utm_source', 'utm_term', 'utm_content', 'foobar' ] );
 }
 
 done_testing;
