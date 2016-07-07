@@ -4,7 +4,7 @@ URL::Normalize - Normalize/optimize URLs.
 
 # VERSION
 
-Version 0.33
+Version 0.35
 
 # SYNOPSIS
 

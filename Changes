@@ -1,5 +1,8 @@
 Revision history for URL::Normalize
 
+0.35    2016-07-07
+        - Corrected the version number in the documentation.
+
 0.34    2016-07-07
         - MAJOR: Directory indexes are NO LONGER case-sensitive, so 'Index.html'
                  and 'index.html' are treated the same.
