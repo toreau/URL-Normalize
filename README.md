@@ -4,7 +4,7 @@ URL::Normalize - Normalize/optimize URLs.
 
 # VERSION
 
-Version 0.35
+Version 0.36
 
 # SYNOPSIS
 
@@ -60,8 +60,7 @@ You can also send in just the path:
     my $normalizer = URL::Normalize->new( '/some/path' );
 
 The latter is NOT recommended, though, and hasn't been tested properly. You
-should always give URL::Normalize an absolute URL by using [URI](https://metacpan.org/pod/URI)'s `new_abs`
-(or is similar solutions).
+should always give URL::Normalize an absolute URL by using [URI](https://metacpan.org/pod/URI)'s `new_abs`.
 
 # METHODS
 
@@ -69,10 +68,6 @@ should always give URL::Normalize an absolute URL by using [URI](https://metacpa
 
 Get the current URL, preferably after you have run one or more of the
 normalization methods.
-
-## get\_url
-
-DEPRECATED! Use `url` instead.
 
 ## URI
 
@@ -137,6 +132,8 @@ Example:
 The default regular expressions for matching a directory index are:
 
 - `/default\.aspx?`
+- `/default\.s?html?`
+- `/home\.s?html?`
 - `/index\.cgi`
 - `/index\.php\d?`
 - `/index\.pl`
@@ -301,8 +298,10 @@ Default social query parameters are:
 
 - `ncid`
 - `utm_campaign`
+- `utm_content`
 - `utm_medium`
 - `utm_source`
+- `utm_term`
 
 You can override these default values when creating the URL::Normalize
 object:
@@ -321,8 +320,20 @@ has been created:
 
     $normalizer->add_social_query_param( 'QueryParam' );
 
+## remove\_query\_parameter
+
+Convenience method for removing a parameter from the URL. If the parameter is
+mentioned multiple times (?a=1&a=2), all occurences will be removed.
+
+## remove\_query\_parameters
+
+Convenience method for removing multiple parameters from the URL. If the
+parameters are mentioned multiple times (?a=1&a=2), all occurences will be
+removed.
+
 # SEE ALSO
 
+- [URI::Normalize](https://metacpan.org/pod/URI::Normalize)
 - [URI](https://metacpan.org/pod/URI)
 - [URI::URL](https://metacpan.org/pod/URI::URL)
 - [URI::QueryParam](https://metacpan.org/pod/URI::QueryParam)
@@ -361,7 +372,7 @@ You can also look for information at:
 
 The MIT License (MIT)
 
-Copyright (c) 2012-2016 Tore Aursand
+Copyright (c) 2012-2018 Tore Aursand
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
