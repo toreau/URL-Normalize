@@ -33,6 +33,10 @@ BEGIN {
         'http://www.example.com/path/page/../#anchor'                                        => 'http://www.example.com/path/#anchor',
         'http://www.example.com/path/page/#anchor/page'                                      => 'http://www.example.com/path/page/#anchor/page',
         'http://www.example.com/path/page/../#anchor/page'                                   => 'http://www.example.com/path/#anchor/page',
+        'HTTPS://www.example.com:443/../test/../foo/index.html'                              => 'https://www.example.com/foo/index.html',
+        'https://WWW.EXAMPLE.COM/./foo/index.html'                                           => 'https://www.example.com/foo/index.html',
+        'https://www.example.com/%66%6f%6f/index.html'                                       => 'https://www.example.com/foo/index.html',
+        'https://www.example.com/foo/index.html'                                             => 'https://www.example.com/foo/index.html',
 
         '/'                                                            => '/',
         '/../a/b/../c/./d.html'                                        => '/a/c/d.html',
