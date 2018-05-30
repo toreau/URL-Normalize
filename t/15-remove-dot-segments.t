@@ -29,6 +29,10 @@ BEGIN {
         'http://go.dagbladet.no/ego.cgi/dbf_tagcloud/http://www.dagbladet.no/tag/adam+lanza' => 'http://go.dagbladet.no/ego.cgi/dbf_tagcloud/http://www.dagbladet.no/tag/adam+lanza',
         'http://www.example.org/a/b/../../index.html'                                        => 'http://www.example.org/index.html',
         'http://www.example.com/a/.../b'                                                     => 'http://www.example.com/a/b',
+        'http://www.example.com/path/page/#anchor'                                           => 'http://www.example.com/path/page/#anchor',
+        'http://www.example.com/path/page/../#anchor'                                        => 'http://www.example.com/path/#anchor',
+        'http://www.example.com/path/page/#anchor/page'                                      => 'http://www.example.com/path/page/#anchor/page',
+        'http://www.example.com/path/page/../#anchor/page'                                   => 'http://www.example.com/path/#anchor/page',
 
         '/'                                                            => '/',
         '/../a/b/../c/./d.html'                                        => '/a/c/d.html',
@@ -42,6 +46,10 @@ BEGIN {
         '/ego.cgi/dbf_tagcloud/http://www.dagbladet.no/tag/adam+lanza' => '/ego.cgi/dbf_tagcloud/http://www.dagbladet.no/tag/adam+lanza',
         '/a/b/../../index.html'                                        => '/index.html',
         '/a/.../b'                                                     => '/a/b',
+        '/path/page/#anchor'                                           => '/path/page/#anchor',
+        '/path/page/../#anchor'                                        => '/path/#anchor',
+        '/path/page/#anchor/page'                                      => '/path/page/#anchor/page',
+        '/path/page/../#anchor/page'                                   => '/path/#anchor/page',
     );
 
     foreach ( keys %urls ) {
