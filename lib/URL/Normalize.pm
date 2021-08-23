@@ -342,9 +342,9 @@ sub remove_directory_index {
 
 Sorts the URL's query parameters alphabetically.
 
-Uppercased parameters will be lowercased DURING sorting, but the parameters will
-of course be in the original case after sorting. If there are multiple values
-for a parameter, the key/value-pairs will be sorted as well.
+Uppercased parameters will be lowercased DURING sorting, but the parameters
+will be in the original case AFTER sorting. If there are multiple values for
+one parameter, the key/value-pairs will be sorted as well.
 
 Example:
 
