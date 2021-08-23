@@ -524,22 +524,6 @@ Example:
 
     print $normalizer->url; # http://www.example.com/bar.html
 
-You should probably use this with caution, as most web frameworks today allows
-fragments for logic, for example:
-
-=over 4
-
-=item * C<http://www.example.com/players#all>
-
-=item * C<http://www.example.com/players#banned>
-
-=item * C<http://www.example.com/players#top>
-
-=back
-
-...can all result in very different results, despite their "unfragmented" URL
-being the same.
-
 =cut
 
 sub remove_fragment {
@@ -554,19 +538,7 @@ sub remove_fragment {
 
 =head2 remove_fragments
 
-Removes EVERYTHING after a C<#>. As with C<remove_fragment>, you should use this
-with caution, because a lot of web applications these days returns different
-output in response to what the fragment is, for example:
-
-=over 4
-
-=item * C<http://www.example.com/users#list>
-
-=item * C<http://www.example.com/users#edit>
-
-=back
-
-...etc.
+Like C<remove_fragment>, but removes EVERYTHING after a C<#>.
 
 =cut
 
