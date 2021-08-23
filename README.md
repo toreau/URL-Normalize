@@ -123,6 +123,7 @@ Example:
 ## remove\_directory\_index
 
 Removes well-known directory indexes, eg. `index.html`, `default.asp` etc.
+This method is case-insensitive.
 
 Example:
 
@@ -136,13 +137,18 @@ Example:
 
 The default regular expressions for matching a directory index are:
 
-- `/default\.aspx?`
-- `/default\.s?html?`
-- `/home\.s?html?`
-- `/index\.cgi`
-- `/index\.php\d?`
-- `/index\.pl`
-- `/index\.s?html?`
+- `default\.aspx?`
+- `default\.html\.aspx?`
+- `default\.s?html?`
+- `home\.s?html?`
+- `index\.cgi`
+- `index\.html\.aspx?`
+- `index\.html\.php`
+- `index\.jsp`
+- `index\.php\d?`
+- `index\.pl`
+- `index\.s?html?`
+- `welcome\.s?html?`
 
 You can override these by sending in your own list of regular expressions
 when creating the URL::Normalizer object:
@@ -163,9 +169,6 @@ object has been created:
     # ...
 
     $normalizer->add_directory_index_regexp( 'MyDirIndex\.html' );
-
-Keep in mind that the regular expression are case-insensitive, so the
-default `/default\.aspx?` expression will also match `/Default\.aspx?`.
 
 ## sort\_query\_parameters
 
