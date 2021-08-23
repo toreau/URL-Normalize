@@ -1,6 +1,8 @@
 Revision history for URL::Normalize
 
 0.40    2021-10-23
+        - Removed handling of social query parameters; it was always too
+          specific/limited, and shouldn't be in a module like this one.
         - Minor fixes/improvements to the documentation.
 
 0.39    2018-06-12
