@@ -266,6 +266,7 @@ sub remove_dot_segments {
 =head2 remove_directory_index
 
 Removes well-known directory indexes, eg. C<index.html>, C<default.asp> etc.
+This method is case-insensitive.
 
 Example:
 
@@ -281,19 +282,29 @@ The default regular expressions for matching a directory index are:
 
 =over 4
 
-=item * C</default\.aspx?>
+=item * C<default\.aspx?>
 
-=item * C</default\.s?html?>
+=item * C<default\.html\.aspx?>
 
-=item * C</home\.s?html?>
+=item * C<default\.s?html?>
 
-=item * C</index\.cgi>
+=item * C<home\.s?html?>
 
-=item * C</index\.php\d?>
+=item * C<index\.cgi>
 
-=item * C</index\.pl>
+=item * C<index\.html\.aspx?>
 
-=item * C</index\.s?html?>
+=item * C<index\.html\.php>
+
+=item * C<index\.jsp>
+
+=item * C<index\.php\d?>
+
+=item * C<index\.pl>
+
+=item * C<index\.s?html?>
+
+=item * C<welcome\.s?html?>
 
 =back
 
@@ -316,9 +327,6 @@ object has been created:
     # ...
 
     $normalizer->add_directory_index_regexp( 'MyDirIndex\.html' );
-
-Keep in mind that the regular expression are case-insensitive, so the
-default C</default\.aspx?> expression will also match C</Default\.aspx?>.
 
 =cut
 
