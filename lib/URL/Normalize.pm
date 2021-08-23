@@ -128,12 +128,17 @@ has 'dir_index_regexps' => (
     default => sub {
         [
             '/default\.aspx?',
+            '/default\.html\.aspx?',
             '/default\.s?html?',
             '/home\.s?html?',
             '/index\.cgi',
+            '/index\.html\.aspx?',
+            '/index\.html\.php',
+            '/index\.jsp',
             '/index\.php\d?',
             '/index\.pl',
             '/index\.s?html?',
+            '/welcome\.s?html?',
         ];
     },
 );
