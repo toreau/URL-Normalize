@@ -144,21 +144,24 @@ Returns a L<URI> representation of the current URL.
 
 =cut
 
-sub URI {
-    my $self = shift;
+has 'URI' => (
+    isa => 'URI',
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
 
-    my $URI = undef;
+        my $URI = eval {
+            URI->new( $self->url )->canonical;
+        };
 
-    eval {
-        $URI = URI->new( $self->url )->canonical;
-    };
+        if ( $@ ) {
+            Carp::carp( "Failed to create a URI object from URL '" . $self->url . "'" );
+        }
 
-    if ( $@ ) {
-        Carp::carp( "Failed to create a URI object from URL '" . $self->url . "'" );
-    }
-
-    return $URI;
-}
+        return $URI;
+    },
+);
 
 =head2 make_canonical
 
