@@ -11,11 +11,11 @@ URL::Normalize - Normalize/optimize URLs.
 
 =head1 VERSION
 
-Version 0.39
+Version 0.40
 
 =cut
 
-our $VERSION = '0.39';
+our $VERSION = '0.40';
 
 =head1 SYNOPSIS
 
@@ -323,8 +323,8 @@ object has been created:
 
     $normalizer->add_directory_index_regexp( 'MyDirIndex\.html' );
 
-Keep in mind that the regular expression ARE case-sensitive, so the
-default C</default\.aspx?> expression WILL ALSO match C</Default\.aspx?>.
+Keep in mind that the regular expression are case-insensitive, so the
+default C</default\.aspx?> expression will also match C</Default\.aspx?>.
 
 =cut
 

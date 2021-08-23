@@ -1,5 +1,8 @@
 Revision history for URL::Normalize
 
+0.40    2021-10-23
+        - Minor fixes/improvements to the documentation.
+
 0.39    2018-06-12
         - Remove unneeded test script, which should fix some failing tests.
 
