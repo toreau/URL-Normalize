@@ -23,13 +23,22 @@ jobs:
           - '5.34'
           - '5.36'
           - 'latest'
-    container:
-      image: perldocker/perl-tester:${{ matrix.perl-version }}
     name: Perl ${{ matrix.perl-version }}
     steps:
+      - name: Setup perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: ${{ matrix.perl-version }}
+          distribution: strawberry
+      - name: Set git to use LF
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
       - uses: actions/checkout@v2
-      - name: Install Dist::Zilla
-        run: cpanm --notest Dist::Zilla
+      - name: Ensure we have a working toolchain
+        run: cpanm --no-test ExtUtils::Manifest App::cpanminus Dist::Zilla
+      - name: Install dependencies
+        run: cpanm --no-test --installdeps .
       - name: Run tests
         run: |
           dzil authordeps --missing | cpanm --notest
