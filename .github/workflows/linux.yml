@@ -28,8 +28,8 @@ jobs:
     name: Perl ${{ matrix.perl-version }}
     steps:
       - uses: actions/checkout@v2
-      - name: Install Dist::Zilla
-        run: cpanm --notest Dist::Zilla
+      - name: Ensure we have a working toolchain
+        run: cpanm --notest ExtUtils::Manifest App::cpanminus Dist::Zilla
       - name: Run tests
         run: |
           dzil authordeps --missing | cpanm --notest
