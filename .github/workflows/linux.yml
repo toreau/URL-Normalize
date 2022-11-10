@@ -37,7 +37,7 @@ jobs:
       - name: Fix ExtUtils::MakeMaker (for Perl 5.16 and 5.18)
         run: cpanm -n App::cpanminus ExtUtils::MakeMaker
       - name: Install Dist::Zilla
-        run: cpanm --notest --verbose https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Dist-Zilla-5.047.tar.gz
+        run: cpanm --notest https://cpan.metacpan.org/authors/id/R/RJ/RJBS/Dist-Zilla-5.047.tar.gz
       - name: Run tests
         run: |
           dzil authordeps --missing | cpanm --notest
