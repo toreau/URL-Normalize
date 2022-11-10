@@ -36,7 +36,7 @@ jobs:
           git config --global core.eol lf
       - uses: actions/checkout@v2
       - name: Ensure we have a working toolchain
-        run: cpanm --no-test ExtUtils::Manifest App::cpanminus Dist::Zilla
+        run: cpanm ExtUtils::Manifest App::cpanminus Dist::Zilla
       - name: Install dependencies
         run: cpanm --no-test --installdeps .
       - name: Run tests
