@@ -11,8 +11,8 @@ jobs:
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install Perl
-        run: brew install perl
+      - name: Install Perl and cpanminus
+        run: brew install perl cpanminus
       - name: Ensure we have a working toolchain
         run: cpanm --notest ExtUtils::Manifest App::cpanminus Dist::Zilla
       - name: Run tests
