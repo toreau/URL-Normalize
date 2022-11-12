@@ -1,5 +1,12 @@
 Revision history for URL::Normalize
 
+{{$NEXT}}
+
+0.44 2022-11-12T09:59:38Z
+
+	2022-11-12
+	- Switched from Dist::Zilla to Minilla.
+
 0.43    2021-08-23
         - Added missing documentation/Changes information. This is what happens
           when it's years between each CPAN release. :(
