@@ -1,6 +1,6 @@
 Revision history for URL::Normalize
 
-0.44    2022-11-12
+0.44    2023-10-10
 	- Switched from Dist::Zilla to Minilla.
         - Optimized removing directory indexes slightly.
 
