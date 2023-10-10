@@ -335,11 +335,13 @@ sub remove_directory_index {
 
     if ( my $URI = $self->URI ) {
         if ( my $path = $URI->path ) {
-            foreach my $regex ( @{$self->dir_index_regexps} ) {
-                $path =~ s,$regex,/,i;
+            my @compiled_regexps = map { qr/$_/i } @{$self->dir_index_regexps};
+
+            foreach my $regex ( @compiled_regexps ) {
+                $path =~ s,$regex,/,;
             }
 
-            $URI->path( $path );
+            $URI->path($path);
         }
 
         $self->_set_url( $URI->as_string );
